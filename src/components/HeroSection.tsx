@@ -90,7 +90,7 @@ export const HeroSection = () => {
               <div className="inline-flex bg-muted rounded-xl p-1">
                 <button
                   onClick={() => setVerificationMethod('url')}
-                  className={`px-4 py-2 rounded-lg transition-smooth flex items-center space-x-2 ${
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 ease-smooth flex items-center space-x-2 ${
                     verificationMethod === 'url' 
                       ? 'bg-primary text-primary-foreground shadow-sm' 
                       : 'text-muted-foreground hover:text-foreground'
@@ -101,7 +101,7 @@ export const HeroSection = () => {
                 </button>
                 <button
                   onClick={() => setVerificationMethod('text')}
-                  className={`px-4 py-2 rounded-lg transition-smooth flex items-center space-x-2 ${
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 ease-smooth flex items-center space-x-2 ${
                     verificationMethod === 'text' 
                       ? 'bg-primary text-primary-foreground shadow-sm' 
                       : 'text-muted-foreground hover:text-foreground'
@@ -112,7 +112,7 @@ export const HeroSection = () => {
                 </button>
                 <button
                   onClick={() => setVerificationMethod('file')}
-                  className={`px-4 py-2 rounded-lg transition-smooth flex items-center space-x-2 ${
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 ease-smooth flex items-center space-x-2 ${
                     verificationMethod === 'file' 
                       ? 'bg-primary text-primary-foreground shadow-sm' 
                       : 'text-muted-foreground hover:text-foreground'
