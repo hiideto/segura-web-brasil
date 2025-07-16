@@ -137,17 +137,17 @@
 @layer components {
   /* Botão principal com gradiente */
   .btn-primary {
-    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg shadow-button transition-smooth hover:scale-105 hover:shadow-result;
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg shadow-button transition-all duration-300 ease-smooth hover:scale-105 hover:shadow-result;
   }
 
   /* Botão de verificação hero */
   .btn-verify {
-    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-12 py-5 rounded-2xl font-bold text-xl shadow-button transition-bounce hover:scale-105 hover:shadow-result;
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-12 py-5 rounded-2xl font-bold text-xl shadow-button transition-all duration-500 ease-bounce hover:scale-105 hover:shadow-result;
   }
 
   /* Cards com estilo de confiança */
   .card-trust {
-    @apply bg-gradient-to-br from-card to-secondary border border-border rounded-2xl p-6 shadow-card transition-smooth hover:shadow-result;
+    @apply bg-gradient-to-br from-card to-secondary border border-border rounded-2xl p-6 shadow-card transition-all duration-300 ease-smooth hover:shadow-result;
   }
 
   /* Resultado seguro */
@@ -172,7 +172,7 @@
 
   /* Área de upload estilizada */
   .upload-area {
-    @apply border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center transition-smooth hover:border-primary hover:bg-primary/5;
+    @apply border-2 border-dashed border-primary/30 rounded-2xl p-8 text-center transition-all duration-300 ease-smooth hover:border-primary hover:bg-primary/5;
   }
 
   /* Animação de pulse para loading */
