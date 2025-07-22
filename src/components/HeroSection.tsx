@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const HeroSection = () => {
   const [verificationMethod, setVerificationMethod] = useState<'url' | 'text' | 'file'>('url');
@@ -23,17 +24,40 @@ export const HeroSection = () => {
 
     setIsVerifying(true);
     
-    // Simular verificação (em produção seria chamada para API)
-    setTimeout(() => {
+    try {
+      // Call the Edge Function for real verification
+      const { data, error } = await supabase.functions.invoke('verify-scam', {
+        body: {
+          type: verificationMethod,
+          content: inputValue
+        }
+      });
+
+      if (error) throw error;
+
       setIsVerifying(false);
+      
       // Scroll para seção de resultados
       document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth' });
       
       toast({
         title: "Verificação concluída",
-        description: "Confira os resultados abaixo.",
+        description: data.status === 'danger' 
+          ? "⚠️ Possível golpe detectado! Confira os detalhes abaixo." 
+          : data.status === 'warning'
+          ? "⚠️ Conteúdo suspeito. Verifique os detalhes."
+          : "✅ Conteúdo parece seguro.",
       });
-    }, 3000);
+    } catch (error) {
+      setIsVerifying(false);
+      console.error('Verification error:', error);
+      
+      toast({
+        title: "Erro na verificação",
+        description: "Ocorreu um erro durante a análise. Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
