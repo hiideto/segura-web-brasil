@@ -124,7 +124,12 @@ Be thorough but concise. Focus on actionable insights.`
     }
 
     const aiResponse = await response.json();
-    const analysis = JSON.parse(aiResponse.choices[0].message.content);
+    let content = aiResponse.choices[0].message.content;
+    
+    // Remove markdown code blocks if present
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    const analysis = JSON.parse(content);
     
     const analysisTime = Date.now() - startTime;
 
