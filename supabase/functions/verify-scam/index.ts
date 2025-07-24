@@ -24,6 +24,31 @@ interface VerificationResult {
   databasesChecked: number;
 }
 
+// Input validation and sanitization
+function validateInput(type: string, content: string): { isValid: boolean; error?: string } {
+  if (!type || !content) {
+    return { isValid: false, error: "Tipo e conteúdo são obrigatórios" };
+  }
+
+  if (!['url', 'text', 'file'].includes(type)) {
+    return { isValid: false, error: "Tipo inválido" };
+  }
+
+  if (content.length > 10000) {
+    return { isValid: false, error: "Conteúdo muito longo (máximo 10.000 caracteres)" };
+  }
+
+  if (type === 'url') {
+    try {
+      new URL(content);
+    } catch {
+      return { isValid: false, error: "URL inválida" };
+    }
+  }
+
+  return { isValid: true };
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -36,7 +61,21 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
-    const { type, content }: VerificationRequest = await req.json();
+    const body = await req.json();
+    const { type, content } = body;
+
+    // Validate input
+    const validation = validateInput(type, content);
+    if (!validation.isValid) {
+      return new Response(
+        JSON.stringify({ error: validation.error }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
     console.log(`Analyzing ${type}:`, content.substring(0, 100));
 
     const startTime = Date.now();

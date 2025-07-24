@@ -1,10 +1,30 @@
-import { Shield, Menu, X } from "lucide-react";
+import { Shield, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import logoEGolpe from "@/assets/logo-e-golpe.png";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao fazer logout",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Logout realizado",
+        description: "Você foi desconectado com sucesso",
+      });
+    }
+  };
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -39,10 +59,19 @@ export const Header = () => {
             </a>
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button className="btn-primary">
-              Verificar Agora
+          {/* User info and logout */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user && (
+              <div className="flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                <span className="text-sm text-muted-foreground">{user.email}</span>
+              </div>
+            )}
+            <Button 
+              variant="outline" 
+              onClick={handleSignOut}
+            >
+              Logout
             </Button>
           </div>
 
@@ -92,8 +121,18 @@ export const Header = () => {
               >
                 Contato
               </a>
-              <Button className="btn-primary mt-4">
-                Verificar Agora
+              {user && (
+                <div className="flex items-center space-x-2 py-2">
+                  <User className="h-4 w-4" />
+                  <span className="text-sm text-muted-foreground">{user.email}</span>
+                </div>
+              )}
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={handleSignOut}
+              >
+                Logout
               </Button>
             </div>
           </nav>
